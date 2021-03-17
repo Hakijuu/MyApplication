@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">lab1-GUI</string>
+    <string name="button_text">Oceny</string>
+    <string name="imie_TextView">Imię:</string>
+    <string name="imie_EditText">Wpisz imię</string>
+    <string name="nazwisko_TextView">Nazwisko:</string>
+    <string name="nazwisko_EditText">Wpisz nazwisko</string>
+    <string name="liczba_ocen_TextView">Liczba ocen:</string>
+    <string name="liczba_ocen_EditText">Wpisz liczbę ocen(5–15)</string>
+</resources>
