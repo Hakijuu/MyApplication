@@ -5,26 +5,37 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+
 
 public class MainActivity extends AppCompatActivity {
     boolean nameChecked = false, lastnameChecked = false, numberChecked = false;
+
+    private EditText name;
+    private EditText lastname;
+    private EditText number;
+    Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Tworzenie komponentów, odczytywanie referencji do elementów GUI (findViewById()) ustawienie obsługi zdarzeń, odczytywanie zapisanego stanu aktywności z obiektu savedInstanceState
         setContentView(R.layout.activity_main);
-
-        Button button = findViewById(R.id.button);
+        name = findViewById(R.id.poleImie);
+        EditText lastname = findViewById(R.id.poleNazwisko);
+        EditText number= findViewById(R.id.poleLiczba);
+        button = findViewById(R.id.button);
         button.setVisibility(View.INVISIBLE);
 
-        TextView name = findViewById(R.id.poleImie);
-        TextView lastname = findViewById(R.id.poleNazwisko);
-        TextView number= findViewById(R.id.poleLiczba);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
 
-
+            }
+        });
 
         name.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus) {
@@ -129,6 +140,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {}
         });
+
+        if (savedInstanceState != null ) {
+            String savedName = savedInstanceState.getString("name");
+            String savedLastname = savedInstanceState.getString("lastname");
+            String savedNumber = savedInstanceState.getString("number");
+            name.setText(savedName);
+            lastname.setText(savedLastname);
+            number.setText(savedNumber);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        name = findViewById(R.id.poleImie);
+        lastname = findViewById(R.id.poleNazwisko);
+        number = findViewById(R.id.poleLiczba);
+
+        outState.putString("name", name.getText().toString());
+        outState.putString("lastname", lastname.getText().toString());
+        outState.putString("number", number.getText().toString());
+        super.onSaveInstanceState(outState);
     }
 
     public boolean checkName(String nameS){
@@ -147,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("Could not parse " + e);
             return false;
         }
+
     }
 
 
