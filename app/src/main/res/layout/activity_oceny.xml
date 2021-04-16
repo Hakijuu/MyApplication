@@ -6,4 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".OcenyActivity">
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Oblicz srednia"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="683dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="117dp"
+        tools:layout_editor_absoluteY="95dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
