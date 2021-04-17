@@ -4,38 +4,38 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/etykieta"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="nazwaPrzedmiotu" />
+        android:layout_height="46dp"
+        android:layout_weight="1" />
 
     <RadioGroup
+        android:id="@+id/grupaOceny"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/ocena2Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2" />
 
         <RadioButton
-            android:id="@+id/radioButton3"
+            android:id="@+id/ocena3Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="3" />
 
         <RadioButton
-            android:id="@+id/radioButton4"
+            android:id="@+id/ocena4Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="4" />
 
         <RadioButton
-            android:id="@+id/radioButton5"
+            android:id="@+id/ocena5Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="5" />

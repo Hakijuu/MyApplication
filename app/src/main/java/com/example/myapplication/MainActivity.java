@@ -1,16 +1,19 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import static com.example.myapplication.R.string.*;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -19,21 +22,24 @@ public class MainActivity extends AppCompatActivity {
     private EditText name;
     private EditText lastname;
     private EditText number;
+    TextView komunikat;
     Button button;
+    float srednia = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Tworzenie komponentów, odczytywanie referencji do elementów GUI (findViewById()) ustawienie obsługi zdarzeń, odczytywanie zapisanego stanu aktywności z obiektu savedInstanceState
         setContentView(R.layout.activity_main);
         name = findViewById(R.id.poleImie);
-        EditText lastname = findViewById(R.id.poleNazwisko);
-        EditText number= findViewById(R.id.poleLiczba);
+        lastname = findViewById(R.id.poleNazwisko);
+        number= findViewById(R.id.poleLiczba);
         button = findViewById(R.id.button);
         button.setVisibility(View.INVISIBLE);
-
+        komunikat = (TextView) findViewById(R.id.komunikat);
+        komunikat.setVisibility(View.INVISIBLE);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                ocenyActivity();
             }
         });
 
@@ -41,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             if(!hasFocus) {
                 if(!checkName(name.getText().toString())) {
                     name.setError(getString(R.string.imie_EditText));
-                    Toast.makeText(MainActivity.this,R.string.imie_EditText,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.imie_EditText,Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -50,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             if(!hasFocus) {
                 if(!checkLastname(lastname.getText().toString())) {
                     lastname.setError(getString(R.string.nazwisko_EditText));
-                    Toast.makeText(MainActivity.this,R.string.nazwisko_EditText,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.nazwisko_EditText,Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -59,11 +65,10 @@ public class MainActivity extends AppCompatActivity {
             if(!hasFocus) {
                 if(!checkNumber(number.getText().toString())) {
                     number.setError(getString(R.string.liczba_ocen_EditText));
-                    Toast.makeText(MainActivity.this,R.string.liczba_ocen_EditText,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.liczba_ocen_EditText,Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
 
         name.addTextChangedListener(new TextWatcher(){
 
@@ -151,6 +156,44 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    protected void onActivityResult(int kodZadania, int kodWyniku, Intent dane) {
+        super.onActivityResult(kodZadania, kodWyniku, dane);
+        if (kodWyniku == RESULT_OK) {
+            //pobierz srednia przekazaną z aktywności GradeList
+            Bundle bundle = dane.getExtras();
+            this.srednia = bundle.getFloat("srednia");
+            komunikat = (TextView) findViewById(R.id.komunikat);
+            komunikat.setText(getString(R.string.komunikatText) + srednia);
+            komunikat.setVisibility(View.VISIBLE);
+            Button button = (Button) findViewById(R.id.button);
+            button.setVisibility(View.VISIBLE);
+            komunikat.setVisibility(View.VISIBLE);
+            if (srednia >= 3.0) {
+                button.setText(R.string.buttonSuper);
+                button.setOnClickListener(
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(MainActivity.this, R.string.gratulacje,Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        }
+                );
+            } else {
+                button.setText(R.string.buttonPorazka);
+                button.setOnClickListener(
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(MainActivity.this, porazka,Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        }
+                );
+            }
+        }
+    }
+
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         name = findViewById(R.id.poleImie);
@@ -179,47 +222,13 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("Could not parse " + e);
             return false;
         }
-
     }
 
-
-    //Aktywność była niewidoczna
-    protected void onRestart(){
-        super.onRestart();
-        //Czynności wykonywane gdy aktywność wcześniej istniała ale była niewidoczna
-    }
-
-    //Aktywność za chwilę stanie się widoczna
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //Tworzenie elementów niezbędnych do uaktualniania interfejsu użytkownika
-    }
-
-    //Aktywność jest na pierwszym planie
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    //aktywność traci "focus"/ Zostanie zapauzowana (gdy system ma wznowić inną aktywność).
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //Tutaj należy zwolnić zasoby i zapisać istotne dane w trwałym magazynie. Implemetacja powinna być szybka bo system nie wznowi innej aktywnośći dopóki ta metoda się nie zakończy
-    }
-
-    //Aktywność nie jest widoczna. Została wstrzymana.
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //Tutaj należy zwolnić zasoby i ew. zapisać istotne elementy stanu. Po wykonaniu tej metody proces z tą aktywnością może zostać "zabity" przez system (bezy wykonywania kolejnych metod cyklu życia).
-    }
-
-    //Za chwiolę aktywność zostanie zniszczona (tymczasowo lub w celu zwolnienia pamięci)
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //po wykonaniu tej metody proces z tą aktywnością może zostać "zabity" przez system (bez wykonania kolejnych metod cyklu życia).
+    //stwórz intent przenoszący do aktywności OcenyActivity
+    public void ocenyActivity()
+    {
+        Intent ocenyActivity = new Intent(MainActivity.this, OcenyActivity.class);
+        ocenyActivity.putExtra("liczbaOcen",new Integer(Integer.parseInt(number.getText().toString())));
+        startActivityForResult(ocenyActivity, new Integer(0));
     }
 }

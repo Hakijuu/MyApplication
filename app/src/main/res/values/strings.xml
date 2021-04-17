@@ -7,11 +7,29 @@
     <string name="nazwisko_EditText">Wpisz nazwisko</string>
     <string name="liczba_ocen_TextView">Liczba ocen:</string>
     <string name="liczba_ocen_EditText">Wpisz liczbę ocen(5–15)</string>
+    <string name="gratulacje">Gratulacje! Otrzymujesz zaliczenie!</string>
+    <string name="porazka">Wysyłam podanie o zaliczenie warunkowe!</string>
+    <string name="komunikatText">Twoja średnia to: </string>
+    <string name="buttonSuper">Super :)</string>
+    <string name="buttonPorazka">Tym razem mi nie poszło.</string>
     <string-array name="tablica">
         <item>Fiz.</item>
         <item>Mat.</item>
         <item>El.</item>
         <item>TC</item>
         <item>PP</item>
+
+        <item>PP</item>
+        <item>PP</item>
+        <item>PP</item>
+        <item>PP</item>
+        <item>PP</item>
+
+        <item>PP</item>
+        <item>PP</item>
+        <item>PP</item>
+        <item>PP</item>
+        <item>PP</item>
+
     </string-array>
 </resources>
