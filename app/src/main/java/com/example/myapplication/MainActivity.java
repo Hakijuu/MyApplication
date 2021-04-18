@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -35,13 +36,9 @@ public class MainActivity extends AppCompatActivity {
         number= findViewById(R.id.poleLiczba);
         button = findViewById(R.id.button);
         button.setVisibility(View.INVISIBLE);
-        komunikat = (TextView) findViewById(R.id.komunikat);
+        komunikat = findViewById(R.id.komunikat);
         komunikat.setVisibility(View.INVISIBLE);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                ocenyActivity();
-            }
-        });
+        button.setOnClickListener(v -> ocenyActivity());
 
         name.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus) {
@@ -156,38 +153,33 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     protected void onActivityResult(int kodZadania, int kodWyniku, Intent dane) {
         super.onActivityResult(kodZadania, kodWyniku, dane);
         if (kodWyniku == RESULT_OK) {
             //pobierz srednia przekazaną z aktywności GradeList
             Bundle bundle = dane.getExtras();
             this.srednia = bundle.getFloat("srednia");
-            komunikat = (TextView) findViewById(R.id.komunikat);
+            komunikat = findViewById(R.id.komunikat);
             komunikat.setText(getString(R.string.komunikatText) + srednia);
             komunikat.setVisibility(View.VISIBLE);
-            Button button = (Button) findViewById(R.id.button);
+            Button button = findViewById(R.id.button);
             button.setVisibility(View.VISIBLE);
             komunikat.setVisibility(View.VISIBLE);
             if (srednia >= 3.0) {
                 button.setText(R.string.buttonSuper);
                 button.setOnClickListener(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Toast.makeText(MainActivity.this, R.string.gratulacje,Toast.LENGTH_SHORT).show();
-                                finish();
-                            }
+                        v -> {
+                            Toast.makeText(MainActivity.this, R.string.gratulacje,Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                 );
             } else {
                 button.setText(R.string.buttonPorazka);
                 button.setOnClickListener(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Toast.makeText(MainActivity.this, porazka,Toast.LENGTH_SHORT).show();
-                                finish();
-                            }
+                        v -> {
+                            Toast.makeText(MainActivity.this, porazka,Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                 );
             }
@@ -228,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
     public void ocenyActivity()
     {
         Intent ocenyActivity = new Intent(MainActivity.this, OcenyActivity.class);
-        ocenyActivity.putExtra("liczbaOcen",new Integer(Integer.parseInt(number.getText().toString())));
-        startActivityForResult(ocenyActivity, new Integer(0));
+        ocenyActivity.putExtra("liczbaOcen",Integer.valueOf(Integer.parseInt(number.getText().toString())));
+        startActivityForResult(ocenyActivity, 0);
     }
 }

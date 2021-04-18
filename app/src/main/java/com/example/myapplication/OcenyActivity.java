@@ -1,19 +1,18 @@
 package com.example.myapplication;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
 import java.util.ArrayList;
 
 public class OcenyActivity extends AppCompatActivity {
 
-    ArrayList<ModelOceny> oceny = new ArrayList<ModelOceny>();
+    ArrayList<ModelOceny> oceny = new ArrayList<>();
     RecyclerView widokR;
     Button button2;
     @Override
@@ -36,25 +35,23 @@ public class OcenyActivity extends AppCompatActivity {
         widokR.setAdapter(adapter);
         widokR.setLayoutManager(new LinearLayoutManager(this));
         button2 = findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Bundle pakunek = new Bundle();
-                pakunek.putFloat("srednia", srednia()); //
-                Intent powrot = new Intent();
-                powrot.putExtras(pakunek);
-                setResult(RESULT_OK, powrot);
-                finish();
-            }
+        button2.setOnClickListener(v -> {
+            Bundle pakunek = new Bundle();
+            pakunek.putFloat("srednia", srednia()); //
+            Intent powrot = new Intent();
+            powrot.putExtras(pakunek);
+            setResult(RESULT_OK, powrot);
+            finish();
         });
     }
 
     //oblicz średnią z ocen zawartych w ArrayList z obiektami modelu
     protected float srednia() {
-        float avg = 0, suma = 0;
+        float avg, suma = 0;
         for (int i = 0; i < oceny.size(); i++) {
             suma += oceny.get(i).getOcena();
         }
-        avg = (float) suma / (float) oceny.size();
+        avg = suma / (float) oceny.size();
         return avg;
     }
 }

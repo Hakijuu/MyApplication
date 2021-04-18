@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +16,8 @@ import java.util.List;
 
 
 public class InteraktywnyAdapterTablicy extends RecyclerView.Adapter<InteraktywnyAdapterTablicy.OcenyViewHolder> {
-    private List<ModelOceny> mListaOcen;
-    private LayoutInflater mPompka;
+    private final List<ModelOceny> mListaOcen;
+    private final LayoutInflater mPompka;
 
     public InteraktywnyAdapterTablicy(Activity kontekst, List<ModelOceny> listaOcen){
         mPompka = kontekst.getLayoutInflater();
@@ -29,7 +30,7 @@ public class InteraktywnyAdapterTablicy extends RecyclerView.Adapter<Interaktywn
     @Override
     public OcenyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType){
         //utworzenie layouta wiersza na podstawie XMLa
-        View wiersz = mPompka.inflate(R.layout.wiersz_listy, null);
+        @SuppressLint("InflateParams") View wiersz = mPompka.inflate(R.layout.wiersz_listy, null);
         //zwrócenie nowego obiektu holdera
         return new OcenyViewHolder(wiersz);
     }
@@ -83,16 +84,13 @@ public class InteraktywnyAdapterTablicy extends RecyclerView.Adapter<Interaktywn
             //ustawienie obsługi zdarzeń w komponentach znajdujących się w wierszu
 
             grupaOceny.setOnCheckedChangeListener(
-                    new RadioGroup.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(RadioGroup group, int checkedId) {
-                            //1 odczytanie z etykiety który obiekt modelu przechowuje dane o zmienionej ocenie
-                            ModelOceny element = (ModelOceny) group.getTag();
-                            //2 zapisanie zmienionej oceny
-                            RadioButton checked = (RadioButton) glownyElementWiersza.findViewById(group.getCheckedRadioButtonId());
-                            element.setOcena(Integer.valueOf(checked.getText().toString()));
-                            mListaOcen.set(element.getId(),element);
-                        }
+                    (group, checkedId) -> {
+                        //1 odczytanie z etykiety który obiekt modelu przechowuje dane o zmienionej ocenie
+                        ModelOceny element = (ModelOceny) group.getTag();
+                        //2 zapisanie zmienionej oceny
+                        RadioButton checked = glownyElementWiersza.findViewById(group.getCheckedRadioButtonId());
+                        element.setOcena(Integer.parseInt(checked.getText().toString()));
+                        mListaOcen.set(element.getId(),element);
                     }
             );
         }

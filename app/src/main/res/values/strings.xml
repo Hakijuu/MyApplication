@@ -12,24 +12,26 @@
     <string name="komunikatText">Twoja średnia to: </string>
     <string name="buttonSuper">Super :)</string>
     <string name="buttonPorazka">Tym razem mi nie poszło.</string>
+    <string name="obliczButtonTekst">Oblicz srednia</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="_4">4</string>
+    <string name="_5">5</string>
     <string-array name="tablica">
         <item>Fiz.</item>
         <item>Mat.</item>
         <item>El.</item>
         <item>TC</item>
         <item>PP</item>
-
-        <item>PP</item>
-        <item>PP</item>
-        <item>PP</item>
-        <item>PP</item>
-        <item>PP</item>
-
-        <item>PP</item>
-        <item>PP</item>
-        <item>PP</item>
-        <item>PP</item>
-        <item>PP</item>
-
+        <item>TPI</item>
+        <item>TOiS</item>
+        <item>AiSD</item>
+        <item>MPiS</item>
+        <item>AM</item>
+        <item>ISM</item>
+        <item>ISBD</item>
+        <item>MiSK</item>
+        <item>SW</item>
+        <item>PRiR</item>
     </string-array>
 </resources>
