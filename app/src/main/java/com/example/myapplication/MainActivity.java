@@ -16,16 +16,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import static com.example.myapplication.R.string.*;
 
-
 public class MainActivity extends AppCompatActivity {
-    boolean nameChecked = false, lastnameChecked = false, numberChecked = false;
-
+    boolean nameChecked = false, lastnameChecked = false, numberChecked = false, obliczanaSrednia = false;
     private EditText name;
     private EditText lastname;
     private EditText number;
     TextView komunikat;
     Button button;
     float srednia = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,9 +34,7 @@ public class MainActivity extends AppCompatActivity {
         lastname = findViewById(R.id.poleNazwisko);
         number= findViewById(R.id.poleLiczba);
         button = findViewById(R.id.button);
-        button.setVisibility(View.INVISIBLE);
         komunikat = findViewById(R.id.komunikat);
-        komunikat.setVisibility(View.INVISIBLE);
         button.setOnClickListener(v -> ocenyActivity());
 
         name.setOnFocusChangeListener((v, hasFocus) -> {
@@ -68,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         name.addTextChangedListener(new TextWatcher(){
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
@@ -91,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         lastname.addTextChangedListener(new TextWatcher(){
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -147,25 +142,17 @@ public class MainActivity extends AppCompatActivity {
             String savedName = savedInstanceState.getString("name");
             String savedLastname = savedInstanceState.getString("lastname");
             String savedNumber = savedInstanceState.getString("number");
+            String savedKomunikat = savedInstanceState.getString("komunikat");
+            boolean savedObliczanaSrednia = savedInstanceState.getBoolean("obliczanaSrednia");
+            Float savedSrednia = savedInstanceState.getFloat("srednia");
+
             name.setText(savedName);
             lastname.setText(savedLastname);
             number.setText(savedNumber);
-        }
-    }
+            komunikat.setVisibility(View.VISIBLE);
+            komunikat.setText(savedKomunikat);
+            srednia = savedSrednia;
 
-    @SuppressLint("SetTextI18n")
-    protected void onActivityResult(int kodZadania, int kodWyniku, Intent dane) {
-        super.onActivityResult(kodZadania, kodWyniku, dane);
-        if (kodWyniku == RESULT_OK) {
-            //pobierz srednia przekazaną z aktywności GradeList
-            Bundle bundle = dane.getExtras();
-            this.srednia = bundle.getFloat("srednia");
-            komunikat = findViewById(R.id.komunikat);
-            komunikat.setText(getString(R.string.komunikatText) + srednia);
-            komunikat.setVisibility(View.VISIBLE);
-            Button button = findViewById(R.id.button);
-            button.setVisibility(View.VISIBLE);
-            komunikat.setVisibility(View.VISIBLE);
             if (srednia >= 3.0) {
                 button.setText(R.string.buttonSuper);
                 button.setOnClickListener(
@@ -174,15 +161,30 @@ public class MainActivity extends AppCompatActivity {
                             finish();
                         }
                 );
-            } else {
+            } else  if (srednia >= 2.0) {
                 button.setText(R.string.buttonPorazka);
                 button.setOnClickListener(
                         v -> {
-                            Toast.makeText(MainActivity.this, porazka,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, R.string.porazka,Toast.LENGTH_SHORT).show();
                             finish();
                         }
                 );
             }
+        }
+    }
+
+
+    @SuppressLint("SetTextI18n")
+    protected void onActivityResult(int kodZadania, int kodWyniku, Intent dane) {
+        super.onActivityResult(kodZadania, kodWyniku, dane);
+        if (kodWyniku == RESULT_OK) {
+            Bundle bundle = dane.getExtras();
+            this.srednia = bundle.getFloat("srednia");
+            komunikat = findViewById(R.id.komunikat);
+            komunikat.setText(getString(R.string.komunikatText) + srednia);
+            komunikat.setVisibility(View.VISIBLE);
+            obliczanaSrednia = true;
+            pokazWynik();
         }
     }
 
@@ -191,10 +193,15 @@ public class MainActivity extends AppCompatActivity {
         name = findViewById(R.id.poleImie);
         lastname = findViewById(R.id.poleNazwisko);
         number = findViewById(R.id.poleLiczba);
+        komunikat = findViewById(R.id.komunikat);
+        button = findViewById(R.id.button);
 
         outState.putString("name", name.getText().toString());
         outState.putString("lastname", lastname.getText().toString());
         outState.putString("number", number.getText().toString());
+        outState.putString("komunikat", komunikat.getText().toString());
+        outState.putFloat("srednia", srednia);
+        outState.putBoolean("obliczanaSrednia", obliczanaSrednia);
         super.onSaveInstanceState(outState);
     }
 
@@ -222,5 +229,30 @@ public class MainActivity extends AppCompatActivity {
         Intent ocenyActivity = new Intent(MainActivity.this, OcenyActivity.class);
         ocenyActivity.putExtra("liczbaOcen",Integer.valueOf(Integer.parseInt(number.getText().toString())));
         startActivityForResult(ocenyActivity, 0);
+    }
+
+    public void pokazWynik(){
+        name.setEnabled(false);
+        lastname.setEnabled(false);
+        number.setEnabled(false);
+        button.setVisibility(View.VISIBLE);
+        button = findViewById(R.id.button);
+        if (srednia >= 3.0) {
+            button.setText(R.string.buttonSuper);
+            button.setOnClickListener(
+                    v -> {
+                        Toast.makeText(MainActivity.this, R.string.gratulacje,Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+            );
+        } else {
+            button.setText(R.string.buttonPorazka);
+            button.setOnClickListener(
+                    v -> {
+                        Toast.makeText(MainActivity.this, R.string.porazka,Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+            );
+        }
     }
 }

@@ -3,11 +3,10 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 
 public class OcenyActivity extends AppCompatActivity {
@@ -24,8 +23,8 @@ public class OcenyActivity extends AppCompatActivity {
 
         Bundle bundleIn = getIntent().getExtras();
         final int liczbaOcen = bundleIn.getInt("liczbaOcen");
-        int i;
-        for (i = 0; i < liczbaOcen; i++) {
+        ModelOceny.setCount(0);
+        for (int i = 0; i < liczbaOcen; i++) {
             ModelOceny ocena = new ModelOceny(nazwyPrzedmiotow[i]);
             ocena.setOcena(2);
             oceny.add(ocena);
@@ -43,16 +42,31 @@ public class OcenyActivity extends AppCompatActivity {
             setResult(RESULT_OK, powrot);
             finish();
         });
+
+        if (savedInstanceState != null ) {
+            int[] ocenyZapisaneTab = savedInstanceState.getIntArray("ocenyTab");
+            for (int i = 0; i < ocenyZapisaneTab.length; i++)
+                oceny.get(i).setOcena(ocenyZapisaneTab[i]);
+        }
     }
 
     //oblicz średnią z ocen zawartych w ArrayList z obiektami modelu
     protected float srednia() {
         float avg, suma = 0;
-        for (int i = 0; i < oceny.size(); i++) {
+        for (int i = 0; i < oceny.size(); i++)
             suma += oceny.get(i).getOcena();
-        }
         avg = suma / (float) oceny.size();
         return avg;
+    }
+
+    //przy obróceniu urządzenia
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        int[] ocenyTab = new int[oceny.size()];
+        for (int i = 0; i < ocenyTab.length; i++)
+            ocenyTab[i] = oceny.get(i).getOcena();
+        outState.putIntArray("ocenyTab", ocenyTab);
+        super.onSaveInstanceState(outState);
     }
 }
 

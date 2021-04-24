@@ -23,6 +23,10 @@ public class ModelOceny {
     public void setOcena(int ocena) {
         this.ocena = ocena;
     }
+
+    public static void setCount(int count) {
+        ModelOceny.count = count;
+    }
 }
 
 

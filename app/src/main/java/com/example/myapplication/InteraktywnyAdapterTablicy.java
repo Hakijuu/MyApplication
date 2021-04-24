@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-
 public class InteraktywnyAdapterTablicy extends RecyclerView.Adapter<InteraktywnyAdapterTablicy.OcenyViewHolder> {
     private final List<ModelOceny> mListaOcen;
     private final LayoutInflater mPompka;
@@ -25,7 +24,6 @@ public class InteraktywnyAdapterTablicy extends RecyclerView.Adapter<Interaktywn
     }
 
     //tworzy główny element Layout i tworzy pojemnik (holder) dla danego wiersza
-
     @NonNull
     @Override
     public OcenyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType){
