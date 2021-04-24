@@ -14,10 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import static com.example.myapplication.R.string.*;
-
 public class MainActivity extends AppCompatActivity {
-    boolean nameChecked = false, lastnameChecked = false, numberChecked = false, obliczanaSrednia = false;
+    boolean nameChecked = false, lastnameChecked = false, numberChecked = false;
     private EditText name;
     private EditText lastname;
     private EditText number;
@@ -143,8 +141,7 @@ public class MainActivity extends AppCompatActivity {
             String savedLastname = savedInstanceState.getString("lastname");
             String savedNumber = savedInstanceState.getString("number");
             String savedKomunikat = savedInstanceState.getString("komunikat");
-            boolean savedObliczanaSrednia = savedInstanceState.getBoolean("obliczanaSrednia");
-            Float savedSrednia = savedInstanceState.getFloat("srednia");
+            float savedSrednia = savedInstanceState.getFloat("srednia");
 
             name.setText(savedName);
             lastname.setText(savedLastname);
@@ -183,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
             komunikat = findViewById(R.id.komunikat);
             komunikat.setText(getString(R.string.komunikatText) + srednia);
             komunikat.setVisibility(View.VISIBLE);
-            obliczanaSrednia = true;
             pokazWynik();
         }
     }
@@ -201,7 +197,6 @@ public class MainActivity extends AppCompatActivity {
         outState.putString("number", number.getText().toString());
         outState.putString("komunikat", komunikat.getText().toString());
         outState.putFloat("srednia", srednia);
-        outState.putBoolean("obliczanaSrednia", obliczanaSrednia);
         super.onSaveInstanceState(outState);
     }
 
